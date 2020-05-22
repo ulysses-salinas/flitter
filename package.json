@@ -1,0 +1,19 @@
+{
+  "name": "phase-2-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": ""
+  },
+  "author": "Ulysses/Wiley/Scott",
+  "license": "",
+  "dependencies": {
+    "express": "4.17.1",
+    "hbs": "4.1.1",
+    "knex": "0.21.1",
+    "nodemon": "2.0.4",
+    "passport-twitter": "1.0.4",
+    "pg": "8.2.1"
+  }
+}

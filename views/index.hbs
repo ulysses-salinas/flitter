@@ -1,0 +1,76 @@
+<!doctype html> 
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Flitter - a Twitter clone</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- Any other custom CSS -->
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top navbar-static-top mx-auto">
+        <a class="navbar-brand" href="#">
+          <img src='images/goose.png' alt="Goose" style="height: 40px; width: 40px;">
+        </a>
+          <ul class="navbar-nav navbar-center mr-auto">
+            <li class='nav-item'><p style='font-size: 35px; margin-right: 30px;'>Flitter - a Twitter clone<p></li>  
+            <li class='nav-item'><a class="nav-link" href="" style='font-size: 25px;'>Login</a></li>
+          </ul>
+        
+    </nav>
+        <br><br><br><br>
+
+    <main class='section'>
+        <div class='container'>
+            <div class='row'>
+                <div class='col text-center'>
+                    <img src='images/goose.png' class='mx-auto' alt="Goose" style="">
+                </div>
+                <div class='col'>
+                    <div class='row'>
+                        <div class='col'>
+                            <!-- Form Control - user log in -->
+                            <form action='/sign_in' method="POST" id='signInForm'>
+                                <div class="form-group">
+                                    <label for="InputEmail1">Email address</label>
+                                    <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp">
+                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="InputPassword1">Password</label>
+                                    <input type="password" class="form-control" id="InputPassword1">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <p style='margin: 15px;'>Or</p>
+                                <a href="/auth/twitter">
+                                    <img src="../images/sign-in-with-twitter-gray-1.png" alt="Sign in with Twitter">
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="fixed-bottom mx-auto">
+        <div class="mx-auto text-center">
+            <p class="text-muted">© Uly, Wily, Scott. DC Flex c/o 2020 </p>
+        </div>
+    </footer
+ 
+    <!-- Required JS for Bootstrap CDN -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src=""></script>
+    
+</body>
+
+</html>

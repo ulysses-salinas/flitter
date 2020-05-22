@@ -40,7 +40,6 @@ Our task was to build a copy of an existing web application using the backend te
     - [Knexjs](http://knexjs.org/)
     - [PG - node-postgres](https://www.npmjs.com/package/pg)
     - [Passport-Twitter](http://www.passportjs.org/packages/passport-twitter/)
-    - [Passport-Local](http://www.passportjs.org/packages/passport-local/)
 
 
 ## Our Awesome Team!

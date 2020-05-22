@@ -3,3 +3,17 @@
     left: 50%;
     transform: translatex(-50%);
 }
+
+ul {
+    list-style: none;
+}
+
+li {
+    margin: 10px;
+}
+
+.userPic {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+}

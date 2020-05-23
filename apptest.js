@@ -5,7 +5,7 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 const testData = require('./testdata.json');
-console.log(testData);
+//console.log(testData);
 
 const port = 7878
 
@@ -19,7 +19,7 @@ app.get('/', function (req,res){
 
 app.get('/user/:twitterid', function (req,res){
     // logic to query the database using the twitterid
-    res.render('tweet_list', { tweetListVar: testData })
+    res.render('tweet_list', { tweetData: testData })
  
 });
 

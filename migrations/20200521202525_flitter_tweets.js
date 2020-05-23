@@ -1,12 +1,14 @@
 const createFlitterTweetsTableQuery = `
-    create table FlitterTweets  (
-	twitterid bigint references FlitterUsers(twitterid),
-	tweet TEXT,
+    create table Flitter_Tweets  (
+    twitterid bigint references Flitter_Users(twitterid),
+    tweetid serial PRIMARY KEY,
+    tweet TEXT,
+    deleted BOOLEAN DEFAULT false,
 	ftime timestamptz,
 	mtime timestamptz default current_timestamp
 );`
 
-const dropFlitterTweetsTableQuery = `drop table list;`
+const dropFlitterTweetsTableQuery = `drop table Flitter_Tweets;`
 
 exports.up = function(knex) {
     return knex.raw(createFlitterTweetsTableQuery)
@@ -15,3 +17,5 @@ exports.up = function(knex) {
 exports.down = function(knex) {
     return knex.raw(dropFlitterTweetsTableQuery)
 };
+
+

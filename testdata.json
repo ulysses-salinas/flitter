@@ -1,0 +1,31 @@
+{
+    "tweets": [
+        {
+            "displayname": "Terd Ferguson",
+            "photoimage": "../images/goose.png",
+            "twitterid": 2222222222,
+            "tweetid": 1,
+            "tweet": "Woot!! My first tweet on the Flitter Twitter clone!",
+            "ftime": "2016-06-22 19:10:25-07",
+            "mtime": "2016-06-24 19:10:25-07"
+        },
+        {
+            "displayname": "Terd Ferguson",
+            "photoimage": "../images/goose.png",
+            "twitterid": 2222222222,
+            "tweetid": 2,
+            "tweet": "My second tweet. Not as exciting as the first.",
+            "ftime": "2016-06-22 19:10:25-07",
+            "mtime": "2016-06-29 19:10:25-07"
+        },
+        {
+            "displayname": "Terd Ferguson",
+            "photoimage": "../images/goose.png",
+            "twitterid": 2222222222,
+            "tweetid": 3,
+            "tweet": "Woohoo!! It got exciting again!",
+            "ftime": "2016-06-22 19:10:25-07",
+            "mtime": "2016-07-21 19:10:25-07"
+        }
+    ]
+}

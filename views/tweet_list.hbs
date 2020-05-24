@@ -36,10 +36,10 @@
                     <div class='row'>
                         <div class='col' style='padding-right: 100px;'>
                             <!-- Form Control - write a tweet -->
-                            <form action='/newtweet/{{tweetListVar.twitterid}}' method="POST" id='tweetForm'>
+                            <form action='/newtweet' method="POST" id='tweetForm'>
                                 <div class="form-group">
                                     <label for="FormControlTextarea1">Write a Tweet!</label>
-                                    <textarea class="form-control" id="FormControlTextarea1" rows="4"></textarea>
+                                    <textarea class="form-control" id="FormControlTextarea1" rows="4" name="tweet"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
@@ -54,7 +54,7 @@
                 <div class='col'>
                     <!-- Templating creating list items for each tweet -->
                     <ul class="tweetlist">
-                        {{#each tweetListVar.tweets}}
+                        {{#each tweets}}
                         <li>
                             <div class="card w-80 mx-auto">
                                 <div class="card-header">
@@ -63,7 +63,9 @@
                                 <div class="card-body">
                                     <p class="card-title">Twitter ID: {{this.twitterid}}</p>
                                     <p class="card-text">Tweet: <strong>{{this.tweet}}</strong></p>
-                                    <a href="/delete/{{this.tweetid}}" class="btn btn-outline-primary btn-sm">Delete this Tweet</a>
+                                    <form action='/delete/{{this.tweetid}}' method="PUT" id='tweetForm'>
+                                     <button type="submit" class="btn btn-outline-primary btn-sm">Delete this Tweet</button>
+                                    </form>
                                 </div>
                             </div>
                         </li>

@@ -1,13 +1,14 @@
 const express = require('express')
-//const db = require('./lib/db') THIS IS COMMENTED OUT AS IT IS NEEDED BUT DOES NOT EXIST YET
+const db = require('./database/index') 
 const session = require('express-session')
-//const validate = require('./lib/validate') JUST A REMINDER THAT WE MIGHT NEED VALIDATION
+const validate = require('./database/validate') 
 const passport = require('passport')
 const Strategy = require('passport-twitter').Strategy
-
+const cookieSession = require('cookie-session')
 const Twit = require('twit')
 require('dotenv').config()
-/*
+const cors = require('cors')
+
 //TWITTER API CREDENTIALS
 var T = new Twit({
     consumer_key:         process.env.consumer_key,
@@ -17,42 +18,53 @@ var T = new Twit({
     timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
     strictSSL:            true,     // optional - requires SSL certificates to be valid.
   })
-  */
- //EXPRESS STUFF
+  
+ //EXPRESS
 const app = express()
 app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({ extended: true}))
 
-/*
+//COOKIES
+app.use(cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys:[process.env.cookie_key]
+}))
+
+//PASSPORT STRATEGY
+passport.use(new Strategy({
+    consumerKey: process.env.consumer_key,
+    consumerSecret: process.env.consumer_secret,
+    callbackURL:process.env.callback_URL
+},
+function(token, tokenSecret, profile, cb){
+        db.newTweeter(profile)
+       
+        console.log("Hey, it's ", profile.username)
+        
+       cb(null, profile)
+}
+
+));
+
+app.use(cors())
+
+ 
+// EXPRESS SESSION
+app.use(session({secret:process.env.access_token, resave: true, saveUninitialized: true}))
+
 //PASSPORT - AUTHENTICATION & COOKIES
 app.use(passport.initialize())
 app.use(passport.session())
+
 passport.serializeUser((user, cb) => {
     cb(null, user.id)
 })
 
 passport.deserializeUser((id, cb) => {
-    User.findById(id).then((user) => {
-        cb(null, user)
+    db.currentFlitterUser(id).then((user) => {
+    cb(null, user)
+    })
     })  
-})
-
-passport.use(new Strategy({
-    consumerKey: process.env.consumer_key,
-    consumerSecret: process.env.consumer_secret,
-    callbackURL:"http://192.168.1.101:5000/welcome"
-},
-function(token, tokenSecret, profile, cb){
-        db.newTweeter(profile)
-        console.log("Hey, it's ", profile.username)
-       cb(null, profile)
-}
-));
- 
-//SESSION
-app.use(session({secret:process.env.access_token, resave: true, saveUninitialized: true}))
-*/
-
 
 
 
@@ -64,45 +76,77 @@ const port = 5000
 app.set('view engine', 'hbs')
 
 //INDEX PAGE SUBJECT TO CHANGE ONCE TEMPLATING FILES ARE AVAILABLE
-app.get('/', function (req, res) {
-   
-
-
-
-})
-
-/*
-//WELCOME PAGE - LEAVING THIS HERE IN CASE WE WANT TO INCORPORATE THE TWITTER API
-app.get('/welcome', passport.authenticate('twitter'), function (req, res){ 
-    var params = { 
-        user_id: req.user.id, 
-        count: 5 //THIS PROBABLY DOES NOT HAVE TO BE THERE
-    }
-//get user by paramters value current value is 'getID'			
-T.get('users/lookup',params,getID);
-function getID(err, data, response) {
-var userID = data
-
-    res.render('welcome.hbs', {
-        user: userID
+/*app.param('twitterid', function (req, res, next, twitterid){
+    // database logic (twitterid)
+    .then((tweeter) => {
+        req.tweeter = req.tweeter || {}
+        req.tweeter.id === tweeter
+        next()
     })
-    console.log(req.user)
-};
+    .catch(() => {
+        res.status(404).send('Tweeter not found')
+    })
 })
 */
 
+// INDEX
+app.get('/', function (req, res) {
+    res.render('index', {  })
+})
 
 
+// GET TWEETLIST
+app.get('/tweetlist', function (req, res){
+    const flitterUser = req.user.twitterid
+    db.getTweets(flitterUser)
+    .then((theTweets) => {
+        console.log(theTweets)
+        res.render('tweet_list.hbs', {
+            tweets: theTweets
+        })
+    })
+})
 
-/*
+// POST NEWTWEET
+app.post('/newtweet', function (req, res){
+    const flitterUser = req.user
+    const tweet = req.body.tweet
+    if (validate.validTweet(tweet)){
+        db.createTweet(flitterUser.twitterid, tweet)
+        .then(function (newTweet) {
+            res.render('new_tweet.hbs', {    //=========== this is a template we can really utilize
+                user: flitterUser,
+                tweet: newTweet
+             }) 
+             console.log(newTweet)
+             console.log(flitterUser)
+        })
+        .catch(() => {
+            res.status(500).send('Something went wrong!')
+        })
+    } else {
+        res.status(400).send('Tweet no good...')
+    }
+})
+
+// GET/delete:tweetid since PUT is not an available method?
+app.get('/delete/:tweetid', function (req, res){
+       
+        db.deletedTweet(parseInt(req.params.tweetid))
+        res.send('deleted_tweet.hbs') //======================== this is a template we can really utilize
+})
+
 //PASSPORT AUTHORIZATION
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
 
- app.get('/auth/twitter/callback',
-  passport.authenticate('twitter', { successRedirect: '/',
-  failureRedirect: '/login' }));
-*/
+app.get('/auth/twitter/callback',
+passport.authenticate('twitter', { session: true}),
+(req, res) => {
+    res.redirect('/tweetlist');
+})
+
+
 
 //EXPRESS APP STARTUP
 const startExpressApp = () => {
@@ -118,9 +162,8 @@ const bootupSequenceFailed = (err) => {
     process.exit(1)
 }
 
-/*
+
 //DATABASE CONNECTION 
 db.connect()
 .then(startExpressApp)
 .catch(bootupSequenceFailed)
-*/

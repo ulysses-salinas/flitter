@@ -19,8 +19,8 @@
         </a>
           <ul class="navbar-nav navbar-center mr-auto">
             <li class='nav-item'><p style='font-size: 35px; margin-right: 30px;'>Flitter - a Twitter clone<p></li>  
-            <li class='nav-item'><a class="nav-link" href="" style='font-size: 25px;'>Login</a></li>
-            <li class='nav-item'><a class="nav-link" href="" style='font-size: 25px;'>Hey there {{#with tweetData.tweets.[0]}}{{displayname}}{{/with}}!</a></li>
+            <li class='nav-item'><a class="nav-link" href="/" style='font-size: 25px;'>Logout</a></li>
+            
           </ul>
     </nav>
 
@@ -35,9 +35,9 @@
                 </div>
                 <div class='col'>
                     <div class='row'>
-                        <div class='col' style='padding-right: 100px;'>
+                        <div class='col' style='padding-right: 100px;'> 
                             <!-- Form Control - write a tweet -->
-                            <form action='/newtweet' method="POST" id='tweetForm'>
+                            <form action='/tweetlist' method="POST" id='tweetForm'>
                                 <div class="form-group">
                                     <label for="FormControlTextarea1">Write a Tweet!</label>
                                     <textarea class="form-control" id="FormControlTextarea1" rows="4" name="tweet"></textarea>

@@ -100,7 +100,8 @@ app.get('/tweetlist', function (req, res){
     const flitterUser = req.user.twitterid
     db.getTweets(flitterUser)
     .then((theTweets) => {
-        console.log(theTweets)
+
+       // console.log(theTweets)
         res.render('tweet_list.hbs', {
             tweets: theTweets
         })
@@ -108,33 +109,42 @@ app.get('/tweetlist', function (req, res){
 })
 
 // POST NEWTWEET
-app.post('/newtweet', function (req, res){
+app.post('/tweetlist', function (req, res){
     const flitterUser = req.user
     const tweet = req.body.tweet
     if (validate.validTweet(tweet)){
-        db.createTweet(flitterUser.twitterid, tweet)
-        .then(function (newTweet) {
-            res.render('new_tweet.hbs', {    //=========== this is a template we can really utilize
-                user: flitterUser,
-                tweet: newTweet
-             }) 
-             console.log(newTweet)
-             console.log(flitterUser)
-        })
+        db.tweetNLoad(flitterUser.twitterid, tweet)
+        .then((theTweets) => {
+           
+            res.render('tweet_list.hbs', {    //=========== this is a template we can really utilize
+   
+                tweets: theTweets.rows  
+        })     
+    })
         .catch(() => {
             res.status(500).send('Something went wrong!')
         })
     } else {
         res.status(400).send('Tweet no good...')
     }
-})
+    })
 
+
+/*
 // GET/delete:tweetid since PUT is not an available method?
 app.get('/delete/:tweetid', function (req, res){
        
         db.deletedTweet(parseInt(req.params.tweetid))
-        res.send('deleted_tweet.hbs') //======================== this is a template we can really utilize
+        db.getTweets(req.user.twitterid)
+        .then((results) => {
+            console.log(results)
+        
+        res.render('tweet_list.hbs', {
+            tweets: results
+        })
+    }) //======================== this is a template we can really utilize
 })
+*/
 
 //PASSPORT AUTHORIZATION
 app.get('/auth/twitter',
@@ -146,6 +156,17 @@ passport.authenticate('twitter', { session: true}),
     res.redirect('/tweetlist');
 })
 
+
+// GET/delete:tweetid 
+app.get('/delete/:tweetid', function (req, res){
+    const flitterUser = req.user
+    db.deleteNLoad(flitterUser.twitterid, parseInt(req.params.tweetid))
+    .then((results) => {
+        res.render('tweet_list.hbs', {
+            tweets: results.rows
+        })
+    })
+})
 
 
 //EXPRESS APP STARTUP

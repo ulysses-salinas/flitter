@@ -65,6 +65,31 @@ function createTweet (flitterId, tweet) {
         
     })
 }
+//===============================================================================
+function tweetNLoad ( flitterId, tweet) {
+    return new Promise(function (resolve, reject){
+        conn.raw(createTweetQuery, [flitterId, tweet])
+        .then((result) => {
+           
+        conn.raw(findTweets, [result.rows[0].twitterid])
+        .then((theTweets) => {
+            
+            theTweets.tweets = result.rows
+            resolve(theTweets)
+            
+        })
+        .catch(() => {
+            reject("Query Failed")
+        })
+    })
+    .catch(() => {
+        reject('Something went wrong!')
+    })
+})
+}
+   
+    
+
 
 //===============================================================================================
 
@@ -86,19 +111,41 @@ function getTweets (flitterUser){
     }
 
 
-
 //=================================================================
  
 // THIS QUERY AND FUNCTION CHANGES THE BOOLEAN STATE OF DELETED ON A GIVEN TWEETID
 
-const deleteTweet = ` UPDATE flitter_tweets SET deleted = TRUE WHERE tweetid = ? AND deleted = FALSE`
+const deleteTweet = `UPDATE flitter_tweets SET deleted = TRUE WHERE tweetid = ? AND twitterid = ? RETURNING *`
+const getTweet = 'SELECT * FROM flitter_tweets WHERE tweetid =?'
 
-function deletedTweet (tweetID) {
-    return conn.raw(deleteTweet, [tweetID])
-    .then((result) => {
-        return result.rows[0]
+
+     
+function deleteNLoad (flitterId, tweetID){
+    return new Promise(function (resolve, reject){
+        conn.raw(getTweet, [tweetID])
+        .then((result) => {
+           
+            conn.raw(deleteTweet, [result.rows[0].tweetid, result.rows[0].twitterid])
+            .then((result) => {
+                conn.raw(findTweets, [result.rows[0].twitterid])
+                .then((theTweets) => {
+                    theTweets.tweets = result.rows
+                    resolve(theTweets)
+                })
+            
+      .catch(() => {
+        reject('Something went wrong')
+      })
+    })
+    .catch(() => {
+        console.log('Something went wrong')
+      })
+    })
     })
 }
+  
+ 
+
 
 module.exports = {
     connect:connect,
@@ -106,6 +153,7 @@ module.exports = {
     currentFlitterUser:currentFlitterUser,
     createTweet:createTweet,
     getTweets:getTweets,
-    deletedTweet:deletedTweet
+    tweetNLoad:tweetNLoad,
+    deleteNLoad:deleteNLoad
    
 }

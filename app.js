@@ -100,6 +100,7 @@ app.get('/tweetlist', function (req, res){
     const flitterUser = req.user.twitterid
     db.getTweets(flitterUser)
     .then((theTweets) => {
+
        // console.log(theTweets)
         res.render('tweet_list.hbs', {
             tweets: theTweets
@@ -144,6 +145,7 @@ app.get('/delete/:tweetid', function (req, res){
     }) //======================== this is a template we can really utilize
 })
 */
+
 //PASSPORT AUTHORIZATION
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
@@ -165,7 +167,6 @@ app.get('/delete/:tweetid', function (req, res){
         })
     })
 })
-
 
 
 //EXPRESS APP STARTUP

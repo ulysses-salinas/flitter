@@ -8,17 +8,10 @@ const cookieSession = require('cookie-session')
 const Twit = require('twit')
 require('dotenv').config()
 const cors = require('cors')
+const Cryptr = require('cryptr')
+const cryptr = new Cryptr(process.env.flitter)
 
-//TWITTER API CREDENTIALS
-var T = new Twit({
-    consumer_key:         process.env.consumer_key,
-    consumer_secret:      process.env.consumer_secret,
-    access_token:         process.env.access_token,
-    access_token_secret:  process.env.access_token_secret,
-    timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
-    strictSSL:            true,     // optional - requires SSL certificates to be valid.
-  })
-  
+
  //EXPRESS
 const app = express()
 app.use(express.static(__dirname + '/public'))
@@ -37,13 +30,13 @@ passport.use(new Strategy({
     callbackURL:process.env.callback_URL
 },
 function(token, tokenSecret, profile, cb){
-        db.newTweeter(profile)
-       
+    
+    const ctoken = cryptr.encrypt(token)
+    const ctokenSecret = cryptr.encrypt(tokenSecret)
+     db.newTweeter(profile, ctoken, ctokenSecret)
         console.log("Hey, it's ", profile.username)
-        
-       cb(null, profile)
+       cb(null, profile)   
 }
-
 ));
 
 app.use(cors())
@@ -66,8 +59,6 @@ passport.deserializeUser((id, cb) => {
     })
     })  
 
-
-
 //PORT
 const port = 5000
 
@@ -75,28 +66,15 @@ const port = 5000
 //HANDLEBARS
 app.set('view engine', 'hbs')
 
-//INDEX PAGE SUBJECT TO CHANGE ONCE TEMPLATING FILES ARE AVAILABLE
-/*app.param('twitterid', function (req, res, next, twitterid){
-    // database logic (twitterid)
-    .then((tweeter) => {
-        req.tweeter = req.tweeter || {}
-        req.tweeter.id === tweeter
-        next()
-    })
-    .catch(() => {
-        res.status(404).send('Tweeter not found')
-    })
-})
-*/
 
 // INDEX
 app.get('/', function (req, res) {
     res.render('index', {  })
 })
 
-
 // GET TWEETLIST
 app.get('/tweetlist', function (req, res){
+    console.log(req.user)
     const flitterUser = req.user.twitterid
     db.getTweets(flitterUser)
     .then((theTweets) => {
@@ -110,14 +88,22 @@ app.get('/tweetlist', function (req, res){
 
 // POST NEWTWEET
 app.post('/tweetlist', function (req, res){
+var T = new Twit({
+    consumer_key:         process.env.consumer_key,
+    consumer_secret:      process.env.consumer_secret,
+    access_token:         cryptr.decrypt(req.user.token),
+    access_token_secret:   cryptr.decrypt(req.user.tokensecret),
+    timeout_ms:           60*1000,  
+    strictSSL:            true,    
+  })
     const flitterUser = req.user
     const tweet = req.body.tweet
+    T.post('statuses/update', {status:tweet},
+    function(err, data, response){console.log(data)})
     if (validate.validTweet(tweet)){
         db.tweetNLoad(flitterUser.twitterid, tweet)
-        .then((theTweets) => {
-           
-            res.render('tweet_list.hbs', {    //=========== this is a template we can really utilize
-   
+        .then((theTweets) => { 
+            res.render('tweet_list.hbs', {  
                 tweets: theTweets.rows  
         })     
     })
@@ -129,23 +115,6 @@ app.post('/tweetlist', function (req, res){
     }
     })
 
-
-/*
-// GET/delete:tweetid since PUT is not an available method?
-app.get('/delete/:tweetid', function (req, res){
-       
-        db.deletedTweet(parseInt(req.params.tweetid))
-        db.getTweets(req.user.twitterid)
-        .then((results) => {
-            console.log(results)
-        
-        res.render('tweet_list.hbs', {
-            tweets: results
-        })
-    }) //======================== this is a template we can really utilize
-})
-*/
-
 //PASSPORT AUTHORIZATION
 app.get('/auth/twitter',
   passport.authenticate('twitter'));
@@ -155,7 +124,6 @@ passport.authenticate('twitter', { session: true}),
 (req, res) => {
     res.redirect('/tweetlist');
 })
-
 
 // GET/delete:tweetid 
 app.get('/delete/:tweetid', function (req, res){

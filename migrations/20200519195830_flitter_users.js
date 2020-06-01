@@ -4,6 +4,8 @@ const createFlitterUserTableQuery = `
 	username text unique,
     displayname text unique,
     photoimage text,
+    token TEXT,
+    tokensecret TEXT,
 	ftime timestamptz,
 	mtime timestamptz default current_timestamp
 );`

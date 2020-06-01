@@ -24,17 +24,20 @@ function connect () {
 
 //===============================================================================================
 // THIS QUERY AND FUNCTION WILL INSERT DATA INITIALLY DISTRIBUTED BY PASSPORT-TWITTER 
-const createFlitterUser = `INSERT INTO flitter_users (twitterid, username, displayname, photoimage)
-VALUES (?, ?, ?, ?)
+const createFlitterUser = `INSERT INTO flitter_users (twitterid, username, displayname, photoimage, token, tokensecret)
+VALUES (?, ?, ?, ?, ?, ?)
 ON CONFLICT ON CONSTRAINT flitter_users_pkey DO NOTHING
 RETURNING *`
 
 
-function newTweeter (flitterUser){
-    return conn.raw(createFlitterUser, [flitterUser.id, flitterUser.username, flitterUser.displayName, flitterUser.photos[0].value])
-    .then((result) => {
-        return result.rows[0]
-    })
+function newTweeter (flitterUser, token, tokensecret){
+   flitterUser.token = token
+   flitterUser.tokensecret = tokensecret
+    return conn.raw(createFlitterUser, [flitterUser.id, flitterUser.username, flitterUser.displayName, flitterUser.photos[0].value, flitterUser.token, flitterUser.tokensecret])
+  .then((results) => {
+      return results.rows[0]
+  })
+    
 }
 //===============================================================================================
 

@@ -40,6 +40,11 @@ Our task was to build a copy of an existing web application using the backend te
     - [Knexjs](http://knexjs.org/)
     - [PG - node-postgres](https://www.npmjs.com/package/pg)
     - [Passport-Twitter](http://www.passportjs.org/packages/passport-twitter/)
+    - [Cookie-Session](https://www.npmjs.com/package/cookie-session)
+    - [Cors](https://www.npmjs.com/package/cors)
+    - [Cryptr](https://www.npmjs.com/package/cryptr)
+    - [Dotenv](https://www.npmjs.com/package/dotenv)
+    - [Twit](https://www.npmjs.com/package/twit)
 
 
 ## Our Awesome Team!

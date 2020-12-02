@@ -55,6 +55,6 @@ Our task was to build a copy of an existing web application using the backend te
 | <a href="https://github.com/ulysses-salinas" target="_blank">`github.com/ulysses-salinas`</a> | <a href="https://github.com/K-Wiley" target="_blank">`github.com/K-Wiley`</a> | <a href="https://github.com/dmstringer" target="_blank">`github.com/dmstringer`</a> 
 
 ## See our project in ACTION!
-<a href="https://flitter.xyz" target="_blank">`    Flitter.xyz   `</a>
+<a href="https://flitter.xyz" target="_blank">`    flitter.xyz   `</a>
 
 > © Ulysses,Wiley,Scott. DigitalCrafts Flex class of 2020.

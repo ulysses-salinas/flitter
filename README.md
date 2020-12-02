@@ -51,7 +51,7 @@ Our task was to build a copy of an existing web application using the backend te
 | **Ulysses Salinas** | **Keilen Wiley** | **Scott Stringer**|
 | :-------------: |:-----------------:| :----------------:|
 
-<img src="https://github.com/ulysses-salinas/phase-2-project/blob/master/public/images/ulysses.jpg"  width="250" height="250"> | [![Wiley](https://github.com/ulysses-salinas/phase-2-project/blob/master/public/images/wiley.jpg?s=200)](https://github.com/ulysses-salinas/phase-2-project) | [![Scott](https://github.com/ulysses-salinas/phase-2-project/blob/master/public/images/scott.jpg?s=200)](https://github.com/ulysses-salinas/phase-2-project)  
+<a href="https://github.com/ulysses-salinas" target="_blank"><img src="https://github.com/ulysses-salinas/phase-2-project/blob/master/public/images/ulysses.jpg"  width="210" height="200"></a> | [![Wiley](https://github.com/ulysses-salinas/phase-2-project/blob/master/public/images/wiley.jpg?s=200)](https://github.com/K-Wiley) | [![Scott](https://github.com/ulysses-salinas/phase-2-project/blob/master/public/images/scott.jpg?s=200)](https://github.com/dmstringer)  
 | <a href="https://github.com/ulysses-salinas" target="_blank">`github.com/ulysses-salinas`</a> | <a href="https://github.com/K-Wiley" target="_blank">`github.com/K-Wiley`</a> | <a href="https://github.com/dmstringer" target="_blank">`github.com/dmstringer`</a> 
 
 ## See our project in ACTION!
